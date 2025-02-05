@@ -1,0 +1,23 @@
+import os
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+import numpy as np 
+file_path = r"C:\Users\Anastasia\Music\проект\2 см 3.wav"
+
+if os.path.exists(file_path): 
+    y, sr = librosa.load(file_path, sr=None)
+    print(f"Данные загружены: длина сигнала = {len(y)}, частота дискретизации = {sr}")
+    D = librosa.stft(y)
+    S_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)  
+    frequencies = librosa.fft_frequencies(sr=sr, n_fft=D.shape[0] * 2)[:S_db.shape[0]]  
+    amplitudes = np.mean(S_db, axis=1)  
+    plt.figure(figsize=(12, 6))
+    plt.bar(frequencies, amplitudes, width=10, color='blue', alpha=0.7, label='Частота vs Амплитуда')
+    plt.title('Гистограмма зависимости частоты от силы звука')
+    plt.xlabel('Частота (Гц)')
+    plt.ylabel('Амплитуда (дБ)')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.xlim(0, 2000) 
+    plt.legend()
+    plt.show()
