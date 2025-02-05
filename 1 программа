@@ -1,0 +1,17 @@
+import os
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+import numpy as np
+file_path = r"C:\Users\Anastasia\Downloads\5233683190824070266.wav"
+if os.path.exists(file_path):
+    y, sr = librosa.load(file_path, sr=None)
+    D = librosa.stft(y)
+    S_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)
+    plt.figure(figsize=(12, 6))
+    librosa.display.specshow(S_db, sr=sr, x_axis='time', y_axis='log', cmap='coolwarm')
+    plt.colorbar(format='%+2.0f dB')
+    plt.title('Спектрограмма звукового сигнала')
+    plt.xlabel('Время (с)')
+    plt.ylabel('Частота (Гц)')
+    plt.show()
